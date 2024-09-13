@@ -54,11 +54,17 @@ public class Calculadora extends javax.swing.JFrame {
         }
     }
     
-    private void negative(){
-        BigDecimal number = new BigDecimal(getText());
-        BigDecimal negate = new BigDecimal("-1");
-        number = number.multiply(negate);
-        jTextPane1.setText("" + number);
+    private void negative(){     
+        try{
+            BigDecimal number = new BigDecimal(getText());
+            number = number.negate();
+            jTextPane1.setText("" + number);
+        }
+        catch(NumberFormatException e){
+            if(jTextPane1.getText().equals("")){
+                jTextPane1.setText("-");
+            }
+        }
     }
     
     private Boolean decimal(){
@@ -69,14 +75,24 @@ public class Calculadora extends javax.swing.JFrame {
     private BigDecimal ascend(){
         String test = getText();
         if("".equals(test)){
-            
+            return null;
         }
         else{
             BigDecimal number = new BigDecimal(getText());
             operaciones.cached = true;
             return number;
         }
-        return null;
+    }
+    
+    private void erase(BigDecimal num){
+        BigDecimal tmp;
+        tmp = ascend();
+            if(num.equals(tmp)){
+                jTextPane1.setText("");
+            }
+            else{
+                needDelete = true;
+            }
     }
     
     private void check(){
@@ -99,6 +115,7 @@ public class Calculadora extends javax.swing.JFrame {
         }
         operaciones.cache = null;
         operaciones.cache2 = null;
+        operaciones.result = null;
     }
 
     /**
@@ -473,35 +490,18 @@ public class Calculadora extends javax.swing.JFrame {
     private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
         // TODO add your handling code here:
         //division
-        if(!operaciones.div){
-            usoVario = null;
-            usoVario = ascend();
-            if(usoVario == null){
-                if(!operaciones.sub && !operaciones.mul && !operaciones.add){
-                    operaciones.cache = ascend();
-                    jTextPane1.setText("");
-                    operaciones.div = true;
-                }
-                else{
-                    operaciones.sub = false;
-                    operaciones.mul = false;
-                    operaciones.add = false;
-                    operaciones.div = true;
-                }
-            }
-            else{
-                check();
-                operaciones.cache = ascend();
-                jTextPane1.setText("");
-                operaciones.div = true;
-            }
-            usoVario = null;
+        BigDecimal hola = ascend();
+        if(hola != null){
+            check();
+            operaciones.div = true;
+            operaciones.cache = ascend();
+            erase(hola);
         }
         else{
-            check();
-            operaciones.cache = ascend();
+            operaciones.sub = false;
+            operaciones.mul = false;
             operaciones.div = true;
-            needDelete = true;
+            operaciones.add = false;                
         }
     }//GEN-LAST:event_jButton35ActionPerformed
 
@@ -591,36 +591,18 @@ public class Calculadora extends javax.swing.JFrame {
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
         // TODO add your handling code here:
         //suma
-        if(!operaciones.add){
-            usoVario = null;
-            usoVario = ascend();
-            if(usoVario == null){
-                if(!operaciones.sub && !operaciones.mul && !operaciones.div){
-                    operaciones.cache = ascend();
-                    jTextPane1.setText("");
-                    operaciones.add = true;
-                }
-                else{
-                    operaciones.sub = false;
-                    operaciones.mul = false;
-                    operaciones.div = false;
-                    operaciones.add = true;
-                }
-            }
-            else{
-                check();
-                operaciones.cache = ascend();
-                jTextPane1.setText("");
-                operaciones.add = true;
-            }
-            usoVario = null;
-        }
-        
-        else{
+        BigDecimal hola = ascend();
+        if(hola != null){
             check();
-            operaciones.cache = ascend();
             operaciones.add = true;
-            needDelete = true;
+            operaciones.cache = ascend();
+            erase(hola);
+        }
+        else{
+            operaciones.sub = false;
+            operaciones.mul = false;
+            operaciones.div = false;
+            operaciones.add = true;                
         }
     }//GEN-LAST:event_jButton23ActionPerformed
 
@@ -638,70 +620,36 @@ public class Calculadora extends javax.swing.JFrame {
     private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
         // TODO add your handling code here:
         //resta
-        if(!operaciones.sub){
-            usoVario = null;
-            usoVario = ascend();
-            if(usoVario == null){
-                if(!operaciones.add && !operaciones.mul && !operaciones.div){
-                    operaciones.cache = ascend();
-                    jTextPane1.setText("");
-                    operaciones.sub = true;
-                }
-                else{
-                    operaciones.add = false;
-                    operaciones.mul = false;
-                    operaciones.div = false;
-                    operaciones.sub = true;
-                }
-            }
-            else{
-                check();
-                operaciones.cache = ascend();
-                jTextPane1.setText("");
-                operaciones.sub = true;
-            }
-            usoVario = null;
+        BigDecimal hola = ascend();
+        if(hola != null){
+            check();
+            operaciones.sub = true;
+            operaciones.cache = ascend();
+            erase(hola);
         }
         else{
-            check();
-            operaciones.cache = ascend();
             operaciones.sub = true;
-            needDelete = true;
+            operaciones.mul = false;
+            operaciones.div = false;
+            operaciones.add = false;                
         }
     }//GEN-LAST:event_jButton20ActionPerformed
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
         // TODO add your handling code here:
         //multiplicacion
-        if(!operaciones.mul){
-            usoVario = null;
-            usoVario = ascend();
-            if(usoVario == null){
-                if(!operaciones.sub && !operaciones.add && !operaciones.div){
-                    operaciones.cache = ascend();
-                    jTextPane1.setText("");
-                    operaciones.mul = true;
-                }
-                else{
-                    operaciones.sub = false;
-                    operaciones.add = false;
-                    operaciones.div = false;
-                    operaciones.mul = true;
-                }
-            }
-            else{
-                check();
-                operaciones.cache = ascend();
-                jTextPane1.setText("");
-                operaciones.mul = true;
-            }
-            usoVario = null;
+        BigDecimal hola = ascend();
+        if(hola != null){
+            check();
+            operaciones.mul = true;
+            operaciones.cache = ascend();
+            erase(hola);
         }
         else{
-            check();
-            operaciones.cache = ascend();
+            operaciones.sub = false;
             operaciones.mul = true;
-            needDelete = true;
+            operaciones.div = false;
+            operaciones.add = false;                
         }
     }//GEN-LAST:event_jButton19ActionPerformed
 
